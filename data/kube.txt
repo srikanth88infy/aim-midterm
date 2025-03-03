@@ -1,0 +1,85 @@
+Question,QuestionAuthor,Answer,AnswerAuthor
+"<p>How to resolve the error no module named pandas when one node (in Airflow's DAG) is successful in using it(pandas) and the other is not?</p>
+
+<p>I am unable to deduce as to why I am getting an error no module named pandas.</p>
+
+<p>I have checked via <code>pip3 freeze</code> and yes, the desired pandas version does show up.</p>
+
+<p>I have deployed this using docker on a kubernetes cluster.</p>
+","aviral sanjay","<p><a href=""https://github.com/apache/incubator-airflow/blob/v1-10-stable/setup.py#L292"" rel=""nofollow noreferrer"">Pandas is generally required</a>, and sometimes used in some hooks to return dataframes. Well, it's possible that Airflow was installed with <code>pip</code> and not <code>pip3</code> possibly being added as a Python 2 module and not a Python 3 module (though, using <code>pip</code> should have installed Pandas when one looks at the <a href=""https://github.com/apache/incubator-airflow/blob/v1-10-stable/setup.py#L292"" rel=""nofollow noreferrer""><code>setup.py</code></a>).</p>
+
+<p>Which Operator in your DAG is giving this error?
+Do you have any PythonVirtualEnvironmentOperators or BashOperators running <code>python</code> from the command line (and thus possibly not sharing the same environment that you're checking has <code>pandas</code>)?</p>
+","dlamblin"
+"<p>I tried to install ibm-eventstreams-dev v 0.1.2 into my Mac. </p>
+
+<p>After I installed eventstreams into my Mac, there's always several pods that can't run. It includes three kafka pods: es-ibm-es-kafka-sts-0/1/2, es-ibm-es-ui-deploy-69758d9dfd-kc2zx, es-ibm-es-ui-oauth2-client-reg-pgvq6 and there also have a failed job named es-ibm-es-ui-oauth2-client-reg. </p>
+
+<p>You can see the details in the follow images:
+<a href=""https://i.stack.imgur.com/Qg3MB.png"" rel=""nofollow noreferrer""><img src=""https://i.stack.imgur.com/Qg3MB.png"" alt=""enter image description here""></a></p>
+
+<p><a href=""https://i.stack.imgur.com/n3YpQ.png"" rel=""nofollow noreferrer""><img src=""https://i.stack.imgur.com/n3YpQ.png"" alt=""enter image description here""></a></p>
+
+<p><a href=""https://i.stack.imgur.com/h4ZBu.png"" rel=""nofollow noreferrer""><img src=""https://i.stack.imgur.com/h4ZBu.png"" alt=""enter image description here""></a></p>
+
+<p>So I have two questions about the ibm-event-stream:</p>
+
+<ul>
+<li><p>Does ibm-eventstreams-dev only supported on ICP? Can I install it on my local environment without ICP environment?</p></li>
+<li><p>How could I solve the ui pods problem in the ibm-eventstreams-dev? </p></li>
+<li><p>what's wrong with the kafka pods? what's the status message ""CrashLoopBackOff"" means?</p></li>
+</ul>
+
+<p>My environment details:</p>
+
+<ul>
+<li>kubernetes 1.11.1</li>
+<li>helm : stable 2.10.0</li>
+<li>a cluster have three nodes, each nodes is a virtual macine.</li>
+</ul>
+
+<p>Please help me, Thanks a lot!</p>
+","DoubleQueens","<blockquote>
+  <p>So I have two questions about the ibm-event-stream:<br>
+  Does ibm-eventstreams-dev only supported on ICP? Can I install it on my local environment without ICP environment?</p>
+</blockquote>
+
+<p>Event Streams will only run on IBM Cloud Private (ICP). That's because ICP provides  more than just a Kubernetes environment. For example, authentication and user management for Event Streams is provided by the ICP platform. </p>
+
+<p>That's what the es-ibm-es-ui-oauth2-client-reg job that is failing for you is trying to do - set up the OAuth integration with ICP. And that'll be why it failed for you in Kubernetes on your Mac - because some of the dependencies that Event Streams has will be missing. </p>
+
+<blockquote>
+  <p>How could I solve the ui pods problem in the ibm-eventstreams-dev? </p>
+</blockquote>
+
+<p>I'm afraid you won't be able to fix this in just K8S on your Mac - all of the problems that you describe are a result of bits of ICP that Event Streams depends on being missing.</p>
+
+<p>You can get a Community Edition of ICP (at no charge) from <a href=""https://www.ibm.com/account/reg/us-en/signup?formid=urx-20295"" rel=""nofollow noreferrer"">https://www.ibm.com/account/reg/us-en/signup?formid=urx-20295</a> - which would let you give it a try. </p>
+","dalelane"
+"<p>I hope it's ok to ask for your advice.</p>
+<p>The problem in a nutshell: my pipeline cannot pull private images from GHCR.IO into Okteto Kubernetes, but public images from the same private repo work.</p>
+<p>I'm on Windows 10 and use WSL2-Ubuntu 20.04 LTS with kinD for development and tried minikube too.</p>
+<p>I get an error in Okteto which says that the image pull is “unauthorized” -&gt; “imagePullBackOff”.</p>
+<p>Things I did:browsed Stack Overflow, RTFM, Okteto FAQ, download the Okteto kubeconfig, pulled my hair out and spent more hours than I would like to admit – still no success yet.</p>
+<p>For whatever reason I cannot create a “kubectl secret” that works. When logged-in to ghcr.io via “docker login --username” I can pull private images locally.</p>
+<p>No matter what I’ve tried I still get the error “unauthorized” when trying to pull a private image in Okteto.</p>
+<p>My Setup with latest updates:</p>
+<ul>
+<li>Windows 10 Pro</li>
+<li>JetBrains Rider IDE</li>
+<li>WSL2-Ubuntu 20.04 LTS</li>
+<li>ASP.NET Core MVC app</li>
+<li>.NET 6 SDK</li>
+<li>Docker</li>
+<li>kinD</li>
+<li>minikube</li>
+<li>Chocolatey</li>
+<li>Homebrew</li>
+</ul>
+<p>Setup kinD</p>
+<pre><code>kind create cluster --name my-name
+
+kubectl create my-namespace
+
+// create a secret to pull images from ghcr.io       
+kubectl create secret docker-registry my-secret -n my-namespace --docker-username=&quot;my-username&quot; --docker-password=&quot;my-password&quot; --docker-email=&quot;my-email&quot; --docker-server=&quot;https://ghcr.io&quot;
