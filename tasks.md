@@ -70,6 +70,24 @@ Ideally, we would want this application to be accessed via a slackbot itself. So
 
 ### Task 4: Creating a Golden Test Data Set \
 
+{'context_recall': 0.0625, 'faithfulness': 0.2891, 'factual_correctness': 0.5056, 'answer_relevancy': 0.9667}
+
+Created a SDG with ragas and used a cheaper o1 model due to the price. But did not expect low numbers :) These number get slightly higher with more synthetic data \
+Also the faithfulness is not acceptable. Need to improve hallucinations by may fine tuning the model, updating the chunk size etc. need to play around with it. 
+
+
+### Task 5: Fine-Tuning Open-Source Embeddings \ 
+
+Did not get a chance to complete this. Will be picking this up later :( 
+
+### Task 6: Assessing Performance 
+
+As mentioned we need to improve a lot on the above metrics. Using reasoning models might help a bit. 
+But definitely with fine tuning our embedding we should be seeing improvement as the data set is Q&A. 
+
+### Task 7: Managing Your Boss and User Expectations
+
+Boss needs better metrics. It would be helpful to understand which tool is responsible for the response. Also the responses need to be streamed onto the UI for better UX. 
 
 
 

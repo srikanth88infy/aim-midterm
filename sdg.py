@@ -41,7 +41,7 @@ def generate_sdg():
     generator_embeddings = LangchainEmbeddingsWrapper(OpenAIEmbeddings())
 
     generator = TestsetGenerator(llm=generator_llm, embedding_model=generator_embeddings)
-    dataset = generator.generate_with_langchain_docs(docs, testset_size=2)
+    dataset = generator.generate_with_langchain_docs(docs, testset_size=15)
 
     print(dataset.to_pandas())
 
@@ -68,8 +68,7 @@ def evaluate_sdg(dataset):
 
     result = evaluate(
         dataset=evaluation_dataset,
-        metrics=[LLMContextRecall(), Faithfulness(), FactualCorrectness(), ResponseRelevancy(), ContextEntityRecall(),
-                 NoiseSensitivity()],
+        metrics=[LLMContextRecall(), Faithfulness(), FactualCorrectness(), ResponseRelevancy()],
         llm=evaluator_llm
     )
 
